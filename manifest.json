@@ -1,0 +1,23 @@
+{
+  "name": "Crystal Mobile - Evidencija prodaje",
+  "short_name": "Crystal Mobile",
+  "description": "Evidencija, kalendar i statistika prodaje telefona za Crystal Mobile",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0c1526",
+  "theme_color": "#0c1526",
+  "icons": [
+    {
+      "src": "355433713_785877716357577_3172765901932005066_n.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "355433713_785877716357577_3172765901932005066_n.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

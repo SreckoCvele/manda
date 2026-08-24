@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<title>Crystal Mobile - Evidencija</title>
+
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="355433713_785877716357577_3172765901932005066_n.jpg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Crystal Mobile">
+<meta name="theme-color" content="#0c1526">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <img src="355433713_785877716357577_3172765901932005066_n.jpg" alt="Crystal Mobile" class="brand-logo">
+    <div class="brand-text">
+      <strong>Crystal Mobile</strong>
+      <span>Evidencija prodaje</span>
+    </div>
+  </div>
+  <button class="icon-btn" id="menuBtn" aria-label="Meni">
+    <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+</header>
+
+<div class="menu-sheet" id="menuSheet">
+  <div class="menu-sheet-inner">
+    <button class="menu-item" id="exportJsonBtn">📦 Izvezi backup (JSON)</button>
+    <button class="menu-item" id="importJsonBtn">📥 Uvezi backup (JSON)</button>
+    <button class="menu-item" id="exportCsvBtn">📊 Izvezi u Excel (CSV)</button>
+    <button class="menu-item danger" id="clearAllBtn">🗑️ Obriši sve podatke</button>
+    <button class="menu-item" id="closeMenuBtn">Zatvori</button>
+    <input type="file" id="importFileInput" accept="application/json" hidden>
+  </div>
+</div>
+
+<main id="app">
+
+  <!-- EVIDENCIJA -->
+  <section class="tab-panel" id="tab-evidencija">
+    <div class="toolbar">
+      <input type="search" id="searchInput" placeholder="Pretraga po modelu, mjestu...">
+      <div class="chips" id="statusFilter">
+        <button class="chip active" data-filter="sve">Sve</button>
+        <button class="chip" data-filter="u_prodaji">U prodaji</button>
+        <button class="chip" data-filter="prodato">Prodato</button>
+      </div>
+    </div>
+    <div id="phoneList" class="phone-list"></div>
+    <p id="emptyState" class="empty-state" hidden>Nema unesenih telefona. Dodaj prvi klikom na dugme "+".</p>
+  </section>
+
+  <!-- KALENDAR -->
+  <section class="tab-panel" id="tab-kalendar" hidden>
+    <div class="calendar-header">
+      <button class="icon-btn" id="prevMonthBtn">‹</button>
+      <strong id="calendarMonthLabel"></strong>
+      <button class="icon-btn" id="nextMonthBtn">›</button>
+    </div>
+    <div class="calendar-grid" id="calendarGrid"></div>
+    <div class="calendar-legend">
+      <span><i class="dot dot-buy"></i> Kupovina</span>
+      <span><i class="dot dot-sell"></i> Prodaja</span>
+    </div>
+    <div id="calendarAgenda" class="calendar-agenda"></div>
+  </section>
+
+  <!-- STATISTIKA -->
+  <section class="tab-panel" id="tab-statistika" hidden>
+    <div class="stat-grid">
+      <div class="stat-card highlight">
+        <span class="stat-label">Ukupna zarada</span>
+        <span class="stat-value" id="statTotal">0,00 KM</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Ovaj mjesec</span>
+        <span class="stat-value" id="statMonth">0,00 KM</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Ova sedmica</span>
+        <span class="stat-value" id="statWeek">0,00 KM</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Prosjek po telefonu</span>
+        <span class="stat-value" id="statAvg">0,00 KM</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">U prodaji</span>
+        <span class="stat-value" id="statInStock">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Prodato ukupno</span>
+        <span class="stat-value" id="statSoldCount">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Prosj. dana do prodaje</span>
+        <span class="stat-value" id="statAvgDays">-</span>
+      </div>
+    </div>
+
+    <h3 class="section-title">Zarada po mjesecima</h3>
+    <div id="monthChart" class="bar-chart"></div>
+
+    <h3 class="section-title">Najprofitabilniji modeli</h3>
+    <div id="topModels" class="top-list"></div>
+  </section>
+
+</main>
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-tab="evidencija">
+    <svg viewBox="0 0 24 24"><path d="M7 3h10a1 1 0 011 1v16l-6-3-6 3V4a1 1 0 011-1z" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>
+    <span>Evidencija</span>
+  </button>
+  <button class="nav-btn" data-tab="kalendar">
+    <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M3 9h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8"/></svg>
+    <span>Kalendar</span>
+  </button>
+  <button class="nav-btn" data-tab="statistika">
+    <svg viewBox="0 0 24 24"><path d="M4 20V10M12 20V4M20 20v-7" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+    <span>Statistika</span>
+  </button>
+</nav>
+
+<button class="fab" id="addBtn" aria-label="Dodaj telefon">+</button>
+
+<!-- MODAL: DODAJ / IZMIJENI TELEFON -->
+<div class="modal-overlay" id="phoneModal">
+  <div class="modal">
+    <div class="modal-header">
+      <strong id="phoneModalTitle">Nova nabavka</strong>
+      <button class="icon-btn" id="closePhoneModalBtn">✕</button>
+    </div>
+    <form id="phoneForm" class="modal-body">
+      <input type="hidden" id="phoneId">
+
+      <label>Model telefona</label>
+      <input type="text" id="model" list="modelSuggestions" placeholder="npr. iPhone 16 Pro Max" required>
+      <datalist id="modelSuggestions"></datalist>
+
+      <div class="field-row">
+        <div>
+          <label>Datum kupovine</label>
+          <input type="date" id="purchaseDate" required>
+        </div>
+        <div>
+          <label>Cijena kupovine (KM)</label>
+          <input type="number" id="purchasePrice" min="0" step="0.01" required>
+        </div>
+      </div>
+
+      <label>Gdje je kupljen</label>
+      <input type="text" id="purchaseLocation" placeholder="npr. Swap, Njemačka, mušterija...">
+
+      <label>Napomena (IMEI, stanje...)</label>
+      <textarea id="notes" rows="2" placeholder="Opciono"></textarea>
+
+      <div class="sold-section" id="soldSection" hidden>
+        <hr>
+        <label class="sold-checkbox">
+          <input type="checkbox" id="isSoldCheckbox">
+          Telefon je prodat
+        </label>
+        <div id="soldFields" hidden>
+          <div class="field-row">
+            <div>
+              <label>Datum prodaje</label>
+              <input type="date" id="saleDate">
+            </div>
+            <div>
+              <label>Cijena prodaje (KM)</label>
+              <input type="number" id="salePrice" min="0" step="0.01">
+            </div>
+          </div>
+          <p class="profit-preview" id="profitPreview"></p>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="deletePhoneBtn" hidden>Obriši</button>
+        <button type="submit" class="btn-primary">Sačuvaj</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
