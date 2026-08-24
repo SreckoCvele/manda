@@ -163,9 +163,8 @@ body{
   width:100%;padding:11px 13px;border-radius:11px;border:1px solid var(--card-border);
   background:var(--card);color:var(--text);font-size:14.5px;font-family:inherit;
 }
-.field-row{display:flex;gap:10px;}
-.field-row>div{flex:1;min-width:0;}
-.modal-body input[type=date]{min-width:0;}
+.field-row{display:flex;flex-direction:column;gap:0;}
+.field-row>div{width:100%;}
 .sold-checkbox{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text);}
 .sold-checkbox input{width:18px;height:18px;}
 .profit-preview{margin-top:8px;font-size:14px;font-weight:600;}

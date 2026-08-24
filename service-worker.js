@@ -1,4 +1,4 @@
-var CACHE_NAME = "crystal-mobile-cache-v1";
+var CACHE_NAME = "crystal-mobile-cache-v2";
 var FILES_TO_CACHE = [
   "./",
   "./index.html",
@@ -32,15 +32,14 @@ self.addEventListener("activate", function (event) {
 self.addEventListener("fetch", function (event) {
   if (event.request.method !== "GET") return;
   event.respondWith(
-    caches.match(event.request).then(function (cached) {
-      var networkFetch = fetch(event.request).then(function (response) {
-        if (response && response.status === 200) {
-          var clone = response.clone();
-          caches.open(CACHE_NAME).then(function (cache) { cache.put(event.request, clone); });
-        }
-        return response;
-      }).catch(function () { return cached; });
-      return cached || networkFetch;
+    fetch(event.request).then(function (response) {
+      if (response && response.status === 200) {
+        var clone = response.clone();
+        caches.open(CACHE_NAME).then(function (cache) { cache.put(event.request, clone); });
+      }
+      return response;
+    }).catch(function () {
+      return caches.match(event.request);
     })
   );
 });
